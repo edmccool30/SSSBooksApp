@@ -1,0 +1,2 @@
+2024-12-28T13:17:56.310846Z 0 [ERROR] [MY-010095] [Server] Failed to access directory for --secure-file-priv. Please make sure that directory exists and is accessible by MySQL Server. Supplied value : /var/lib/mysql-files
+2024-12-28T13:17:56.310951Z 0 [ERROR] [MY-010119] [Server] Aborting
