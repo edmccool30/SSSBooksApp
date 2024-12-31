@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Daniel's Book Application - All Books</title>
+        <title>Daniel's Book Application - Biography</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
     </head>
     <body class="bg-light py-5">
@@ -33,16 +33,18 @@
         </nav>
 
         <div class="container">
-            <h1 class="text-center mb-4">All Books</h1>
-            <ul class="list-group">
-                @foreach($books as $book)
-                    <li class="list-group-item">
-                        <h2><a href="{{ route('book.show', $book->id) }}" class="text-decoration-underline">{{ $book->title }}</a></h2>
-                        <p><strong>Written by:</strong> {{ $book->author->name ?? 'an unknown author' }}</p>
-                        <p><strong>Released on:</strong> {{ $book->dateReleased->format('d-m-Y') }}</p>
-                    </li>
-                @endforeach
-            </ul>
+            <h1 class="text-center mb-4">{{ $author->name }}</h1>
+            <p><strong>Nationality:</strong> {{ $author->nationality }}</p>
+            <p><strong>Date of Birth:</strong> {{ $author->birthdate->format('d-m-Y') }}</p>
+
+            <a href="{{ route('author.edit', $author->id) }}" class="btn btn-warning">Update</a>
+            
+            <!-- Delete Button -->
+            <form action="{{ route('author.destroy', $author->id) }}" method="POST" style="display:inline;">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this author?')">Delete</button>
+            </form>
         </div>
 
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
