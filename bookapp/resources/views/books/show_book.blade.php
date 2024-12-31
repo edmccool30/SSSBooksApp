@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-    <html lang="en">
+<html lang="en">
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Daniel's Book Application - Edit Author</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Daniel's Book Application - Book Details</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
     </head>
     <body class="bg-light py-5">
@@ -33,28 +33,18 @@
         </nav>
 
         <div class="container">
-            <h1 class="text-center mb-4">Edit an author</h1>
+            <h1 class="text-center mb-4">{{ $book->title }}</h1>
+            <p><strong>Author:</strong> {{ $book->author->name ?? 'Unknown author' }}</p>
+            <p><strong>Released on:</strong> {{ $book->dateReleased }}</p>
 
-            <!-- Display success message if any -->
-            @if (session('success'))
-                <div class="alert alert-success">{{ session('success') }}</div>
-            @endif
-
-            <form action="{{ route('authors.update', $author->id) }}" method="POST">
+            <a href="{{ route('book.edit', $book->id) }}" class="btn btn-warning">Update</a>
+            
+            <!-- Delete Button -->
+            <form action="{{ route('book.delete', $book->id) }}" method="POST" style="display:inline;">
                 @csrf
-                @method('PUT') <!-- This is required to send a PUT request -->
-                
-                <label for="name">Name</label>
-                <input type="text" name="name" value="{{ old('name', $author->name) }}" required>
-            
-                <label for="nationality">Nationality</label>
-                <input type="text" name="nationality" value="{{ old('nationality', $author->nationality) }}" required>
-            
-                <label for="birthDate">Date of Birth</label>
-                <input type="date" name="birthDate" value="{{ old('birthDate', $author->birthDate) }}" required>
-            
-                <button type="submit">Update Author</button>
-            </form>            
+                @method('DELETE')
+                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this book?')">Delete</button>
+            </form>
         </div>
 
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

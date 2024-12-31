@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-    <html lang="en">
+<html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Daniel's Book Application - Edit Book</title>
+        <title>Daniel's Book Application - Edit Author</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
     </head>
     <body class="bg-light py-5">
@@ -33,34 +33,34 @@
         </nav>
 
         <div class="container">
-            <h1 class="text-center mb-4">Edit a book</h1>
+            <h1 class="text-center mb-4">Edit an author</h1>
 
             <!-- Display success message if any -->
             @if (session('success'))
                 <div class="alert alert-success">{{ session('success') }}</div>
             @endif
 
-            <form action="{{ route('books.update', $book->id) }}" method="POST">
+            <form action="{{ route('author.update', $author->id) }}" method="POST">
                 @csrf
-                @method('PUT')
+                @method('PUT') <!-- This is required to send a PUT request -->
+                
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" name="name" value="{{ old('name', $author->name) }}" required class="form-control">
+                </div>
             
-                <label for="title">Title</label>
-                <input type="text" name="title" value="{{ old('title', $book->title) }}" required>
+                <div class="form-group">
+                    <label for="nationality">Nationality</label>
+                    <input type="text" name="nationality" value="{{ old('nationality', $author->nationality) }}" required class="form-control">
+                </div>
             
-                <label for="author_id">Author</label>
-                <select name="author_id" required>
-                    @foreach($authors as $author)
-                        <option value="{{ $author->id }}" {{ $author->id == $book->author_id ? 'selected' : '' }}>
-                            {{ $author->name }}
-                        </option>
-                    @endforeach
-                </select>
+                <div class="form-group">
+                    <label for="birthdate">Date of Birth</label>
+                    <input type="date" name="birthdate" value="{{ old('birthdate', $author->birthdate) }}" required class="form-control">
+                </div>
             
-                <label for="dateReleased">Publication Date</label>
-                <input type="date" name="dateReleased" value="{{ old('dateReleased', $book->dateReleased) }}" required>
-            
-                <button type="submit">Update Book</button>
-            </form>            
+                <button type="submit" class="btn btn-primary">Update Author</button>
+            </form>
         </div>
 
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Daniel's Book Application - Biography</title>
+        <title>Daniel's Book Application - All Authors</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
     </head>
     <body class="bg-light py-5">
@@ -33,18 +33,16 @@
         </nav>
 
         <div class="container">
-            <h1 class="text-center mb-4">{{ $author->name }}</h1>
-            <p><strong>Nationality:</strong> {{ $author->nationality }}</p>
-            <p><strong>Date of Birth:</strong> {{ $author->birthdate->format('d-m-Y') }}</p>
-
-            <a href="{{ route('author.edit', $author->id) }}" class="btn btn-warning">Update</a>
-            
-            <!-- Delete Button -->
-            <form action="{{ route('author.destroy', $author->id) }}" method="POST" style="display:inline;">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this author?')">Delete</button>
-            </form>
+            <h1 class="text-center mb-4">All Authors</h1>
+            <ul class="list-group">
+                @foreach($authors as $author)
+                    <li class="list-group-item">
+                        <h2><a href="{{ route('author.show', $author->id) }}" class="text-decoration-underline">{{ $author->name }}</a></h2>
+                        <p><strong>Nationality:</strong> {{ $author->nationality }}</p>
+                        <p><strong>Born:</strong> {{ $author->birthdate }}</p>
+                    </li>
+                @endforeach
+            </ul>
         </div>
 
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

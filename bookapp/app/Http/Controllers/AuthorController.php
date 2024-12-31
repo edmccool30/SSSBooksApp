@@ -10,40 +10,46 @@ class AuthorController extends Controller
     public function index()
     {
         $authors = Author::all();
-        return view('authors', compact('authors'));
+        return view('authors.authors', compact('authors')); // Corrected view path
     }
 
     public function addAuthorForm()
     {
-        return view('add_author');
+        return view('authors.add_author'); // Corrected view path
     }
 
     // Create
     public function store(Request $request)
     {
+        // Validate input
         $request->validate([
             'name' => 'required',
             'nationality' => 'required',
-            'birthDate' => 'required'
+            'birthdate' => 'required'
         ]);
 
-        Author::create($request->all());
+        // Create the new author, ensuring the birthDate is stored as a date object
+        Author::create([
+            'name' => $request->name,
+            'nationality' => $request->nationality,
+            'birthdate' => $request->birthdate
+        ]);
+
         return redirect()->route('authors')->with('success', 'Author added successfully!');
     }
 
     // Read
     public function show($id)
     {
-        $author = Author::findOrFail($id); // Retrieve the author by ID
-        return view('author.show', compact('author')); // Pass the author to the view
+        $author = Author::findOrFail($id);
+        return view('authors.show_author', compact('author')); // Corrected view path
     }
-
 
     // Update
     public function edit($id)
     {
         $author = Author::findOrFail($id);
-        return view('edit_author', compact('author'));
+        return view('authors.edit_author', compact('author')); // Corrected view path
     }
 
     public function update($id, Request $request)
@@ -51,21 +57,32 @@ class AuthorController extends Controller
         $request->validate([
             'name' => 'required',
             'nationality' => 'required',
-            'birthDate' => 'required'
+            'birthdate' => 'required'
         ]);
 
         $author = Author::findOrFail($id);
         $author->update($request->all());
-        return redirect()->route('authors')->with('success', 'Author has been updated');
+
+        // Redirect to the author's show page after update
+        return redirect()->route('author.show', $author->id)->with('success', 'Author has been updated');
     }
 
     // Delete
+    public function deleteConfirmation($id)
+    {
+        $author = Author::findOrFail($id);
+        return view('authors.delete_author', compact('author')); // Pass the author to the confirmation view
+    }
+
     public function destroy($id)
     {
         $author = Author::findOrFail($id);
-        // Delete all books related to this author so that books do not have blank authors
-        $author->books()->delete();
+
+        // Delete the author's books if needed, and then delete the author
+        $author->books()->delete(); // Optional, if you want to delete the books related to this author
         $author->delete();
-        return redirect()->route('authors')->with('success', 'Author and associated books deleted successfully!');
+
+        // Redirect after deletion
+        return redirect()->route('authors')->with('success', 'Author deleted successfully!');
     }
 }
