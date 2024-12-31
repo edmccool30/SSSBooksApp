@@ -19,14 +19,19 @@ class AuthorController extends Controller
         return view('author', compact('author'));
     }
 
+    public function addAuthorForm()
+    {
+        return view('add_author');
+    }
+
     public function store(Request $request)
     {
         $author = new Author();
         $author->name = $request->name;
         $author->nationality = $request->nationality;
-        $author->birth_date = $request->birth_date;
+        $author->birthDate = $request->birthDate;
         $author->save();
 
-        return redirect('/author');
+        return redirect()->route('authors')->with('success', 'Author added successfully!');
     }
 }
