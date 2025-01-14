@@ -33,18 +33,28 @@
         </nav>
 
         <div class="container">
-            <h1 class="text-center mb-4">{{ $book->title }}</h1>
-            <p><strong>Author:</strong> {{ $book->author->name ?? 'Unknown author' }}</p>
-            <p><strong>Released on:</strong> {{ $book->dateReleased }}</p>
+            <div>
+                <h1 class="text-center mb-4">{{ $book->title }}</h1>
+                <p><strong>Author:</strong> {{ $book->author->name ?? 'Unknown author' }}</p>
+                <p><strong>Released on:</strong> {{ $book->dateReleased }}</p>
+            </div>
 
-            <a href="{{ route('book.edit', $book->id) }}" class="btn btn-warning">Update</a>
+            @if ($book->image_path)
+                <div class="text-center">
+                    <img src="{{ asset('storage/' . $book->image_path) }}" alt="Book Cover" class="img-thumbnail" style="max-width: 1000px; margin-top: 15px;">
+                </div>
+            @endif
             
-            <!-- Delete Button -->
-            <form action="{{ route('book.delete', $book->id) }}" method="POST" style="display:inline;">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this book?')">Delete</button>
-            </form>
+            <div>
+                <a href="{{ route('book.edit', $book->id) }}" class="btn btn-warning">Update</a>
+                
+                <!-- Delete Button -->
+                <form action="{{ route('book.delete', $book->id) }}" method="POST" style="display:inline;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this book?')">Delete</button>
+                </form>
+            </div>
         </div>
 
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

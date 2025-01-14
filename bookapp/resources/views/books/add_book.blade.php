@@ -39,8 +39,19 @@
             @if (session('success'))
                 <div class="alert alert-success">{{ session('success') }}</div>
             @endif
+            
+            <!-- The following code is to refer to any errors in the code -->
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
-            <form action="{{ route('book.add') }}" method="POST">
+            <form action="{{ route('book.add') }}" method="POST" enctype="multipart/form-data">
                 @csrf <!-- CSRF token for security -->
 
                 <div class="form-group">
@@ -56,6 +67,11 @@
                             <option value="{{ $author->id }}">{{ $author->name }}</option>
                         @endforeach
                     </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="image">Book Cover</label>
+                    <input type="file" name="image" class="form-control">
                 </div>
 
                 <div class="form-group">

@@ -37,9 +37,16 @@
             <ul class="list-group">
                 @foreach($books as $book)
                     <li class="list-group-item">
-                        <h2><a href="{{ route('book.show', $book->id) }}" class="text-decoration-underline">{{ $book->title }}</a></h2>
-                        <p><strong>Written by:</strong> {{ $book->author->name ?? 'an unknown author' }}</p>
-                        <p><strong>Released on:</strong> {{ $book->dateReleased->format('d-m-Y') }}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h2><a href="{{ route('book.show', $book->id) }}" class="text-decoration-underline">{{ $book->title }}</a></h2>
+                                <p><strong>Written by:</strong> {{ $book->author->name ?? 'an unknown author' }}</p>
+                                <p><strong>Released on:</strong> {{ $book->dateReleased->format('d-m-Y') }}</p>
+                            </div>
+                            @if ($book->image_path)
+                                <img src="{{ asset('storage/' . $book->image_path) }}" alt="Book Cover" class="img-thumbnail" style="max-width: 200px; margin-left: 15px;">
+                            @endif
+                        </div>
                     </li>
                 @endforeach
             </ul>

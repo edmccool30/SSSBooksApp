@@ -39,7 +39,18 @@
                 <div class="alert alert-success">{{ session('success') }}</div>
             @endif
 
-            <form action="{{ route('book.update', $book->id) }}" method="POST">
+            <!-- The following code is to refer to any errors in the code -->
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            <form action="{{ route('book.update', $book->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
@@ -60,8 +71,25 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="image">Book Image</label>
+                    
+                    <!-- Check if the book has an existing image -->
+                    @if ($book->image_path)
+                        <div class="mb-3">
+                            <!-- Make the image clickable, linking to the full-size image -->
+                            <a href="{{ asset('storage/' . $book->image_path) }}" target="_blank">
+                                <img src="{{ asset('storage/' . $book->image_path) }}" alt="Current Book Image" class="img-thumbnail" style="max-width: 200px;">
+                            </a>
+                        </div>
+                    @endif
+                
+                    <!-- Input for new image (optional) -->
+                    <input type="file" name="image" class="form-control">
+                </div>
+
+                <div class="form-group">
                     <label for="dateReleased">Publication Date</label>
-                    <input type="date" name="dateReleased" value="{{ old('dateReleased', $book->dateReleased) }}" class="form-control" required>
+                    <input type="date" name="dateReleased" value="{{ old('dateReleased', $book->dateReleased ? $book->dateReleased->format('Y-m-d') : '') }}" class="form-control" required>
                 </div>
 
                 <button type="submit" class="btn btn-primary">Update Book</button>
